@@ -30,6 +30,30 @@ class Caltech(VisionDataset):
         - Labels should start from 0, so for Caltech you will have lables 0...100 (excluding the background class) 
         '''
 
+
+        image_dir = os.path.expanduser(root)
+
+        self.samples = []
+
+        classes = [d.name for d in os.scandir(image_dir) if d.is_dir()]
+        del classes['BACKGROUND_Google']
+        class_index = {classes[i] : i for i in range(len(classes))}
+
+        split_dir = os.path.join(dir, '..', split + '.txt')
+
+        with open(split_dir, 'r') as file:
+          for line in file:
+            label = line.split('/')[0]
+            if(label != 'BACKGROUND_Google'):
+              self.samples.append((pil_loader(os.path.join(dir, line)), class_index[label]))
+
+        file.close()
+        
+        print(self.samples)
+        print(len(self.samples))
+
+
+
     def __getitem__(self, index):
         '''
         __getitem__ should access an element through its index
@@ -40,9 +64,9 @@ class Caltech(VisionDataset):
             tuple: (sample, target) where target is class_index of the target class.
         '''
 
-        image, label = ... # Provide a way to access image and label via index
-                           # Image should be a PIL Image
-                           # label can be int
+        image, label = self.samples[index] # Provide a way to access image and label via index
+                                           # Image should be a PIL Image
+                                           # label can be int
 
         # Applies preprocessing when accessing the image
         if self.transform is not None:
@@ -55,5 +79,5 @@ class Caltech(VisionDataset):
         The __len__ method returns the length of the dataset
         It is mandatory, as this is used by several other components
         '''
-        length = ... # Provide a way to get the length (number of elements) of the dataset
+        length = len(self.samples)        # Provide a way to get the length (number of elements) of the dataset
         return length
