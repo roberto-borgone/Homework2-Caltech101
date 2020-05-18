@@ -36,7 +36,7 @@ class Caltech(VisionDataset):
         self.samples = []
 
         classes = [d.name for d in os.scandir(image_dir) if d.is_dir()]
-        del classes['BACKGROUND_Google']
+        del classes[classes.index('BACKGROUND_Google')]
         class_index = {classes[i] : i for i in range(len(classes))}
 
         split_dir = os.path.join(dir, '..', split + '.txt')
