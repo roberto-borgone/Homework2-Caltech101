@@ -39,13 +39,13 @@ class Caltech(VisionDataset):
         del classes[classes.index('BACKGROUND_Google')]
         class_index = {classes[i] : i for i in range(len(classes))}
 
-        split_dir = os.path.join(dir, '..', split + '.txt')
+        split_dir = os.path.join(image_dir, '..', split + '.txt')
 
         with open(split_dir, 'r') as file:
           for line in file:
             label = line.split('/')[0]
             if(label != 'BACKGROUND_Google'):
-              self.samples.append((pil_loader(os.path.join(dir, line)), class_index[label]))
+              self.samples.append((pil_loader(os.path.join(image_dir, line)), class_index[label]))
 
         file.close()
         
