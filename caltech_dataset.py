@@ -38,6 +38,8 @@ class Caltech(VisionDataset):
         classes = [d.name for d in os.scandir(image_dir) if d.is_dir()]
         del classes[classes.index('BACKGROUND_Google')]
         class_index = {classes[i] : i for i in range(len(classes))}
+        
+        print(class_index)
 
         split_dir = os.path.join(image_dir, '..', split + '.txt')
 
@@ -49,9 +51,6 @@ class Caltech(VisionDataset):
               self.samples.append((pil_loader(os.path.join(image_dir, image)), class_index[label]))
 
         file.close()
-        
-        print(self.samples)
-        print(len(self.samples))
 
 
 
