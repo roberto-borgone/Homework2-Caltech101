@@ -44,8 +44,9 @@ class Caltech(VisionDataset):
         with open(split_dir, 'r') as file:
           for line in file:
             label = line.split('/')[0]
+            image = line.split('\n')[0]
             if(label != 'BACKGROUND_Google'):
-              self.samples.append((pil_loader(os.path.join(image_dir, line)), class_index[label]))
+              self.samples.append((pil_loader(os.path.join(image_dir, image)), class_index[label]))
 
         file.close()
         
